@@ -5,17 +5,15 @@
 	<artifactId>elevenBets</artifactId>
 	<packaging>war</packaging>
 	<version>2.0.6-SNAPSHOT</version>
-	<name>Eleven bets application which enables to bet your favorite teams and check your luck</name>
-	<url>http://maven.apache.org</url>
+	<name>Eleven bets application which enables to bet on your favorite teams and check your luck</name>
+	<url>http://elevenbets.us-east-2.elasticbeanstalk.com/</url>
 	<dependencies>
 		<!-- Spring MVC Dependency -->
-
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
 			<version>3.2.10.RELEASE</version>
 		</dependency>
-
 		<!-- JSTL Dependency -->
 		<!-- https://mvnrepository.com/artifact/jstl/jstl -->
 		<dependency>
@@ -23,7 +21,6 @@
 			<artifactId>jstl</artifactId>
 			<version>1.2</version>
 		</dependency>
-
 		<!-- https://mvnrepository.com/artifact/taglibs/standard -->
 		<dependency>
 			<groupId>taglibs</groupId>
@@ -90,13 +87,11 @@
 			<version>2.5</version>
 			<scope>provided</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>javassist</groupId>
 			<artifactId>javassist</artifactId>
 			<version>3.12.1.GA</version>
 		</dependency>
-
 		<!-- https://mvnrepository.com/artifact/commons-lang/commons-lang -->
 		<dependency>
 			<groupId>commons-lang</groupId>
@@ -133,7 +128,6 @@
 				<role>Sr.Developer</role>
 			</roles>
 		</developer>
-
 		<developer>
 			<name>Sai</name>
 			<email>sai.k@gmail.com</email>
@@ -143,6 +137,4 @@
 			</roles>
 		</developer>
 	</developers>
-
-
 </project>
