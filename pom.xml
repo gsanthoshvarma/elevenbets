@@ -103,6 +103,12 @@
 			<artifactId>commons-lang</artifactId>
 			<version>2.6</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>3.2.10.RELEASE</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>ElevenBets</finalName>
@@ -117,25 +123,25 @@
 			</plugin>
 		</plugins>
 	</build>
-	
+
 	<developers>
-	  <developer>
-	    <name>Sandeep</name>
-	    <email>sandeep.g@gmail.com</email>
-	    <organization>GVS</organization>
-	    <roles>
-	       <role>Sr.Developer</role>
-	    </roles>
-	  </developer>
-	  
-	   <developer>
-	    <name>Sai</name>
-	    <email>sai.k@gmail.com</email>
-	    <organization>GVS</organization>
-	    <roles>
-	       <role>Developer</role>
-	    </roles>
-	  </developer>
+		<developer>
+			<name>Sandeep</name>
+			<email>sandeep.g@gmail.com</email>
+			<organization>GVS</organization>
+			<roles>
+				<role>Sr.Developer</role>
+			</roles>
+		</developer>
+
+		<developer>
+			<name>Sai</name>
+			<email>sai.k@gmail.com</email>
+			<organization>GVS</organization>
+			<roles>
+				<role>Developer</role>
+			</roles>
+		</developer>
 	</developers>
 
 
