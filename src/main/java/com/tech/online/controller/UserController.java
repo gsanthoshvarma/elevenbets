@@ -110,9 +110,7 @@ public class UserController {
 		String AuthenticationMessage= null;
 		GmailExternalController smusertagged = new GmailExternalController();
 		smusertagged.sendOTPExternalGmail("1234", "sandeep.sm541@gmail.com");
-		HttpSession s=request1.getSession();
-		s.setAttribute("OTP", "1234");
-		System.out.println(request1);
+		
 		String message="Successfully sent OTP to mail";			
 	    return message;
 	}
