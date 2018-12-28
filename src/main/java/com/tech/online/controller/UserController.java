@@ -1,18 +1,20 @@
 package com.tech.online.controller;
 
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
+import java.util.Random;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-
+import com.tech.online.dao.TeamsSMUsersTaggingDAO;
 import com.tech.online.dao.UserDAO;
 import com.tech.online.poimpl.MatchesListPOImpl;
 import com.tech.online.poimpl.SMUsersDetailsPOImpl;
@@ -28,92 +30,99 @@ public class UserController {
 		String correspondingJspView = null;
 		UserDAO userDao = new UserDAO();
 		SMUsersDetailsPOImpl userDetails =null;
-		TeamListPOImpl teamDetails =null;
-		
+		TeamListPOImpl teamDetails =null;		
 		Boolean verifiedUserId = userDao.verifyUserAthentication(name,password);
 		System.out.println("Username"+name);
-		System.out.println("Password"+password);
-		
+		System.out.println("Password"+password);		
 		if(verifiedUserId==true) {
 			List<SMUsersDetailsPOImpl> list =userDao.getUserDetails(name, password);
 			List<MatchesListPOImpl>matchDataList = userDao.getMatchesList();
 			List<TeamListPOImpl> teamDataList = userDao.getTeamsList();
-			List<TeamsSMUsersTaggingPOImpl> teamTaggedList = userDao.getTaggedTeams();
-			
-			
-			userDetails =list.get(0);
-			//teamDetails =teamData.get(0);
+			List<TeamsSMUsersTaggingPOImpl> teamTaggedList = userDao.getTaggedTeams(name);			
+			userDetails =list.get(0);			
 			modelView = new ModelAndView("productList");
 			modelView.addObject("userdetails", userDetails);
 			modelView.addObject("matchData",matchDataList);
 			modelView.addObject("teamData",teamDataList);
-			modelView.addObject("teamTaggedData",teamTaggedList);
-			//modelView = new ModelAndView("action_page", AuthenticationMessage, name+"  "+password+"Authentication Successfull");
+			modelView.addObject("teamTaggedData",teamTaggedList);			
 		}
-		else {
-			//AuthenticationMessage="Invalid Credental";
-			correspondingJspView="Login2";
-			
-			
-		}				
-		//modelView = new ModelAndView("AuthenticationMessage",userDetails );
-		System.out.println("AuthenticationMethod1");
+		else {			
+			correspondingJspView="Login2";			
+		}		
+	    System.out.println("AuthenticationMethod1");
 		System.out.println("AuthenticationMethod2");
-	    return modelView;
-	    
+	    return modelView;	    
 	}
 	
-	@RequestMapping("/NewRegistrationForm")
+	
+	@RequestMapping(value = "/NewRegistrationForm", method = RequestMethod.POST)
 	public ModelAndView saveNewUserDetails(@RequestParam("username") String username,
 			@RequestParam("passwd") String password,@RequestParam("firstName") String firstName,
 			@RequestParam("lastName") String lastName ,@RequestParam("gender") String gender,
 			@RequestParam("bday") String bday,
-			@RequestParam("gmail") String gmail,
-			@RequestParam("mobile") String mobile ) {
-		//String AuthenticationMessage= null;
+			@RequestParam(value="gmail",required=false) String gmail,
+			@RequestParam("mobile") String mobile) { 
 		ModelAndView modelView =null;
 		String correspondingJspView = null;
-		UserDAO userDao = new UserDAO();
-		
+		UserDAO userDao = new UserDAO();		
 		Boolean verifiedUserId = userDao.saveNewRegistrationForm(username, password,firstName,lastName,mobile,gender,gmail,bday);
-		if(verifiedUserId==true) {
-			//AuthenticationMessage="Authentication Successfull";
+		if(verifiedUserId==true) {			
 			correspondingJspView="Login2";
-			String message ="Congratulations "+username+ " You have successfully registered..!!";
-			//modelView = new ModelAndView("action_page", AuthenticationMessage, name+"  "+password+"Authentication Successfull");
+			String message ="Congratulations "+username+ "..! You have successfully registered..!!";			
 			modelView = new ModelAndView(correspondingJspView, "AuthenticationMessage", message);	
 		}
-		else {
-			//AuthenticationMessage="Invalid Credental";
+		else {			
 			correspondingJspView="Login2";			
-			
-		}				
-			
+		}			
 	    return modelView;
 	    
-	}
+	}	
 	
-	
-	@RequestMapping(value="/UserAthentication1",method =RequestMethod.POST)
+	@RequestMapping(value="/SavingBettingMatchesByUsers",method =RequestMethod.POST)
 	@ResponseBody
-	public String CheckUserAthenticationDetails1(@RequestBody String id) {
-		//String AuthenticationMessage= null;
-//		TeamsSMUsersTaggingDAO smusertagged = new TeamsSMUsersTaggingDAO();
-//		smusertagged.saveSMUsersTaggingTeam("preetam", id);
+	public String SaveBettingDetails(String id, String username) {		
+		TeamsSMUsersTaggingDAO smusertagged = new TeamsSMUsersTaggingDAO();
+		smusertagged.saveSMUsersTaggingTeam(id,username);
 		String message="Successfully saved values";			
 	    return message;
 	    
 	}
+	
+	@RequestMapping(value="/checkExistingUser",method =RequestMethod.POST)
+	@ResponseBody
+	public String checkingExistingUser(String id) {
+		boolean result=false;
+		UserDAO userDao = new UserDAO();
+		result=userDao.checkExistingUser(id);
+		if(result)
+		return "true";	
+	    return "false";
+	    
+	}
+	
+	@RequestMapping(value="/checkingExistingMail",method =RequestMethod.POST)
+	@ResponseBody
+	public String checkingExistingMail(String mail) {
+		boolean result=false;
+		UserDAO userDao = new UserDAO();
+		result=userDao.checkExistingMail(mail);
+		if(result)
+		return "true";	
+	    return "false";
+	    
+	}
+	
 	@RequestMapping(value="/SendOtpToMail",method =RequestMethod.POST)
 	@ResponseBody
-	public String sendingOTP(@RequestBody String id,HttpServletRequest request1) {
-		String AuthenticationMessage= null;
+	public String sendingOTP(@RequestBody String id,HttpServletRequest request1) {		
+		Random rnd = new Random();
+		int n = 100000 + rnd.nextInt(900000);
+		String OTP =String.valueOf(n);
 		GmailExternalController smusertagged = new GmailExternalController();
-		smusertagged.sendOTPExternalGmail("1234", "sandeep.sm541@gmail.com");
-		
-		String message="Successfully sent OTP to mail";			
-	    return message;
+		smusertagged.sendOTPExternalGmail(n, id);							
+	    return OTP;
 	}
+	
 	@RequestMapping(value="/varifyOTP",method =RequestMethod.POST)
 	@ResponseBody
 	public String verifyOTP(@RequestBody String code,HttpServletRequest request) {
