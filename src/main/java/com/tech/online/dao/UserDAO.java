@@ -1,5 +1,6 @@
 package com.tech.online.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Query;
@@ -21,12 +22,17 @@ public class UserDAO {
 		config = new AnnotationConfiguration().configure();
 		sessFacty = config.buildSessionFactory();
 	}
-
-	public Boolean verifyUserAthentication(String user, String pwd) {
-		boolean userFound = false;
-		try {
-			Session session = sessFacty.openSession();
-			String SQL_QUERY = " FROM SMUsersDetailsPOImpl s WHERE s.username=:name AND s.passwd=:pwd";
+	
+	
+	public Boolean verifyUserAthentication(String user,String pwd) {
+		boolean userFound =false;
+		 try
+         {
+			 Session session = sessFacty.openSession();
+			 Transaction tnx = session.beginTransaction();
+			 tnx = session.beginTransaction();       
+            String SQL_QUERY =" FROM SMUsersDetailsPOImpl s WHERE s.username=:name AND s.passwd=:pwd";
+           
 			Query query = session.createQuery(SQL_QUERY);
 			query.setParameter("name", user);
 			query.setParameter("pwd", pwd);
@@ -68,17 +74,64 @@ public class UserDAO {
 		}
 		return userFound;
 	}
-
-	public List<SMUsersDetailsPOImpl> getUserDetails(String user, String pwd) {
-
-		List<SMUsersDetailsPOImpl> userList = null;
-		try {
-			Session session = sessFacty.openSession();
-			String SQL_QUERY1 = " FROM SMUsersDetailsPOImpl  WHERE username=:name AND passwd=:pwd";
-
+	
+      public boolean checkExistingUser(String user) {		
+		boolean result=false;
+		 try
+         {
+			 Session session = sessFacty.openSession();
+			 Transaction tnx = session.beginTransaction();
+			 tnx = session.beginTransaction();       
+            String SQL_QUERY1 =" FROM SMUsersDetailsPOImpl  WHERE username=:name";           
 			Query query1 = session.createQuery(SQL_QUERY1);
-			query1.setParameter("name", user);
-			query1.setParameter("pwd", pwd);
+			query1.setParameter("name",user);			
+			List<SMUsersDetailsPOImpl> list = query1.list();
+			if ((list != null) && (list.size() > 0)) {				
+				result=true;
+			}
+			session.close();				
+	     }
+		 catch (Exception e) {
+			
+		}
+		 return result; 		
+	}
+      
+      public boolean checkExistingMail(String mail) {		
+  		boolean result=false;
+  		 try
+           {
+  			 Session session = sessFacty.openSession();
+  			 Transaction tnx = session.beginTransaction();
+  			 tnx = session.beginTransaction();       
+              String SQL_QUERY1 =" FROM SMUsersDetailsPOImpl  WHERE gmail=:name";           
+  			Query query1 = session.createQuery(SQL_QUERY1);
+  			query1.setParameter("name",mail);			
+  			List<SMUsersDetailsPOImpl> list = query1.list();
+  			if ((list != null) && (list.size() > 0)) {				
+  				result=true;
+  			}
+  			session.close();				
+  	     }
+  		 catch (Exception e) {
+  			
+  		}
+  		 return result; 		
+  	}  
+	
+	public List<SMUsersDetailsPOImpl> getUserDetails(String user,String pwd) {
+		
+		List<SMUsersDetailsPOImpl> userList=null;
+		 try
+         {
+			 Session session = sessFacty.openSession();
+			 Transaction tnx = session.beginTransaction();
+			 tnx = session.beginTransaction();       
+            String SQL_QUERY1 =" FROM SMUsersDetailsPOImpl  WHERE username=:name AND passwd=:pwd";
+           
+			Query query1 = session.createQuery(SQL_QUERY1);
+			query1.setParameter("name",user);
+			query1.setParameter("pwd",pwd);
 			List<SMUsersDetailsPOImpl> list = query1.list();
 
 			if ((list != null) && (list.size() > 0)) {
@@ -95,12 +148,15 @@ public class UserDAO {
 	}
 
 	public List getMatchesList() {
-		List matchList = null;
-		try {
-			Session session = sessFacty.openSession();
-			String SQL_QUERY1 = " FROM MatchesListPOImpl";
-
-			Query matchquery = session.createQuery(SQL_QUERY1);
+		List matchList =null;
+		try
+        {
+			 Session session = sessFacty.openSession();
+			 Transaction tnx = session.beginTransaction();
+			 tnx = session.beginTransaction();       
+           String SQL_QUERY1 =" FROM MatchesListPOImpl";
+          
+			Query matchquery = session.createQuery(SQL_QUERY1);			
 			List matchlist = matchquery.list();
 
 			if ((matchlist != null) && (matchlist.size() > 0)) {
@@ -117,12 +173,15 @@ public class UserDAO {
 	}
 
 	public List<TeamListPOImpl> getTeamsList() {
-		List<TeamListPOImpl> result = null;
-		try {
-			Session session = sessFacty.openSession();
-			String SQL_QUERY1 = " FROM TeamListPOImpl";
-
-			Query teamquery = session.createQuery(SQL_QUERY1);
+		List<TeamListPOImpl> result =null;
+		try
+        {
+			 Session session = sessFacty.openSession();
+			 Transaction tnx = session.beginTransaction();
+			 tnx = session.beginTransaction();       
+           String SQL_QUERY1 =" FROM TeamListPOImpl";
+          
+			Query teamquery = session.createQuery(SQL_QUERY1);			
 			List teamlist = teamquery.list();
 
 			if ((teamlist != null) && (teamlist.size() > 0)) {
@@ -136,26 +195,34 @@ public class UserDAO {
 		return result;
 
 	}
-
-	public List<TeamsSMUsersTaggingPOImpl> getTaggedTeams() {
-		List<TeamsSMUsersTaggingPOImpl> result = null;
-		try {
-			Session session = sessFacty.openSession();
-			String SQL_QUERY1 = " FROM TeamsSMUsersTaggingPOImpl";
-
-			Query teamquery = session.createQuery(SQL_QUERY1);
+	
+	public List<TeamsSMUsersTaggingPOImpl> getTaggedTeams(String Username) {
+		List<TeamsSMUsersTaggingPOImpl> result =null;
+		try
+        {
+			 Session session = sessFacty.openSession();
+			 Transaction tnx = session.beginTransaction();
+			 tnx = session.beginTransaction();       
+           String SQL_QUERY1 =" FROM TeamsSMUsersTaggingPOImpl WHERE username=:name";
+          
+			Query teamquery = session.createQuery(SQL_QUERY1);	
+			teamquery.setParameter("name",Username);
 			List teamlist = teamquery.list();
 
-			if ((teamlist != null) && (teamlist.size() > 0)) {
-
-				result = teamlist;
+			if ((teamlist != null) && (teamlist.size() > 0)) {				
+				
+				result= teamlist;
 			}
 			session.close();
-
-		} catch (Exception e) {
-		}
-		return result;
-
+				
 	}
-
+		 catch (Exception e) {
+			// TODO: handle exception
+		}
+		 return result;
+		
+		
+	}
+	
 }
+
