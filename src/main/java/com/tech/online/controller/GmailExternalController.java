@@ -30,15 +30,16 @@ public class GmailExternalController {
             ex.printStackTrace();
         }
     }
-    public void sendOTPExternalGmail(String otp,String mailTo) {
+    public void sendOTPExternalGmail(int otp,String mailTo) {
         // SMTP server information
         String host = "smtp.gmail.com";
         String port = "587";
         String mailFrom = "sandeep.sm541";
         String password = "samhita416";
 
-        String subject = "Online Betting::OTP";
-        String message = "OTP number"+otp;
+        String subject = "Online IPL Betting :: OTP";
+        String message = otp + " is the OTP for your registation page \n Do not share with anyone"
+        		             +"\n \n Thanks & Regards,\n Sandeep";
 
         GmailExternalController mailer = new GmailExternalController();
 
