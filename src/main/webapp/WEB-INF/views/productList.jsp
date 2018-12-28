@@ -62,15 +62,15 @@
 	   <c:forEach items="${teamTaggedData}" var="element1" varStatus="loop" >
 	   var selectedTeam ="${element1.teamId}";
 	   var collapsible='collapsible'.concat(selectedTeam);
-	   $("#"+selectedTeam).prop('disabled', true);
-	   $("#"+selectedTeam).css("background-color", "#3b9cd3");
-	    $("#"+collapsible).show();
+	   $('#'+selectedTeam).prop('disabled', true);
+	   $('#'+selectedTeam).removeClass( "btn-default" ).addClass("btn btn-success");
+	   $('#'+selectedTeam).text("Bet On");
+	    $('#'+collapsible).show();
 	    </c:forEach>
 	    
 	});
     function callBack_Team1(butn){
-    	debugger
-	    
+    	debugger;
 	   console.log("Team A id--"+butn.id);
 	   var id=butn.id;	  
 	   var currentId=id.split("team1_id");
@@ -78,30 +78,29 @@
 	   var teamB ='team2_id'.concat(finalId);
 	   var collapsibleTeamA='collapsibleteam1_id'.concat(finalId);
 	   var collapsibleTeamB='collapsibleteam2_id'.concat(finalId);
-	   $("#"+collapsibleTeamB).hide();
-	   $("#"+collapsibleTeamA).show();
-	   $("#"+teamB).prop('disabled',false);
-	   $("#"+teamB).css("background-color", "white");
-	   $("#"+id).prop('disabled', true);
-	   $("#"+id).css("background-color", "#3b9cd3");
-	   $("#"+id).text("Bet On");
-	   
+	   $('#'+collapsibleTeamB).hide();
+	   $('#'+collapsibleTeamA).show();
+	   $('#'+teamB).prop('disabled',false);	  
+	   $('#'+teamB).removeClass("btn btn-success").addClass("btn btn-default");
+	   $('#'+teamB).text("Team2");
+	   $('#'+id).prop('disabled', true);
+	   $('#'+id).removeClass( "btn-default" ).addClass("btn btn-success");
+	   $("#"+id).text("Bet On");	   
+	   var username='${userdetails.username}';	   
 	   $.ajax({
-			type : "POST",
-			contentType : "application/json",
-			url : "#?teamId="+butn.id,
-			dataType : 'json',
-			timeout : 100000,
-			success : function(data) {
-				console.log("SUCCESS: ", data);
-				display(data);
+			type : "POST",			
+			url : "${home}SavingBettingMatchesByUsers?id="+id+"&username="+username,
+			contentType: "application/json; charset=utf-8",			          
+			success : function(data) {			
+				console.log("SUCCESS: "+data);		        				
+			},error:function(data) {
+				console.log("error "+data);
 			}
 	   });
 	   
    }
     function callBack_Team2(butn){
     	debugger
-	    
 	   console.log("Team B id--"+butn.id);
 	   var id=butn.id;	  
 	   var currentId=id.split("team2_id");
@@ -109,23 +108,24 @@
 	   var teamA='team1_id'.concat(finalId);
 	   var collapsibleTeamA='collapsibleteam1_id'.concat(finalId);
 	   var collapsibleTeamB='collapsibleteam2_id'.concat(finalId);
-	   $("#"+collapsibleTeamA).hide();
-	   $("#"+collapsibleTeamB).show();
-	   $("#"+teamA).prop('disabled', false);
-	   $("#"+teamA).css("background-color", "white");
-	   $("#"+id).prop('disabled', true);
-	   $("#"+id).css("background-color", "#3b9cd3");
+	   $('#'+collapsibleTeamA).hide();
+	   $('#'+collapsibleTeamB).show();
+	   $('#'+teamA).prop('disabled', false);
+	   $('#'+teamA).removeClass("btn btn-success").addClass("btn btn-default");
+	   $('#'+teamA).text("Team1");
+	   $('#'+id).prop('disabled', true);
+	   $('#'+id).removeClass( "btn-default" ).addClass("btn btn-success");
+	   $("#"+id).text("Bet On");	   
+       var username='${userdetails.username}';
 	   
 	   $.ajax({
-		   type : "POST",
-			contentType : "application/json",
-			url : "${home}UserAthentication1",
-			data : JSON.stringify(id),
-			dataType : 'json',
-			timeout : 100000,
-			success : function(data) {
-				console.log("SUCCESS: "+data);
-				display(data);		  
+			type : "POST",			
+			url : "${home}SavingBettingMatchesByUsers?id="+id+"&username="+username,
+			contentType: "application/json; charset=utf-8",			          
+			success : function(data) {			
+				console.log("SUCCESS: "+data);		        				
+			},error:function(data) {
+				console.log("error "+data);
 			}
 	   });
 	   

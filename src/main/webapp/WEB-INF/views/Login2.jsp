@@ -27,6 +27,7 @@
 	    <button id="signin_id" type="submit" class="btn btn-success">Sign In</button>
 	    <button id="signup_id" type="submit" class="btn btn-success" onclick="ClickRegistration(this)">Sign Up Form</button>
     </div>
+    <div><h6>${AuthenticationMessage}</h6></div>
  </div>  
 </div>
 </div>   
@@ -81,6 +82,14 @@
 <h4>Registration Form With Bootstrap</h4>
 <div class="middle  col-md-40 " style="padding: 28px;padding-left: 378px;">
 <form class="form-horizontal" role="form" method="post" action="/ElevenBets/NewRegistrationForm">
+
+
+<div class="form-group">
+<label for="userName" class="col-sm-2 control-label">User Name:</label>
+<div class="col-sm-6">
+<input type="text" name="username" class="form-control" id="username" placeholder="User Name" onblur="checkingExistingUser(this)">
+</div>
+</div>
  
 <div class="form-group">
 <label for="firstName" class="col-sm-2 control-label">First Name:</label>
@@ -116,13 +125,13 @@
     </div>
   </div>
   
-  <div class="form-group">
-<label for="passwd" class="col-sm-2 control-label">Gmail-Id:</label>
+ <div class="form-group">
+<label for="gmail" class="col-sm-2 control-label">Gmail-Id:</label>
 <div class="col-sm-4">
-<input type="text" name="gmail" class="form-control" id="gmail" placeholder="gmailId">
+<input type="text" pattern="[^@]+@[^@]+\.[a-zA-Z]{2,6}" name="gmail" class="form-control" id="gmail">
 </div>
 <div class="col-sm-3">
-<button type="button" class="btn btn-primary" id="validId" onclick="sendingOTP(this)" >Valid OTP</button>
+<button type="button" class="btn btn-primary" id="validId" onclick="sendingOTP(this)" >Sending OTP</button>
 </div>
 <div id="msgID" class="col-sm-3"></div>
 </div>
@@ -134,6 +143,7 @@
 <div class="col-sm-2">
 <input type="text" name="otp" class="form-control" id="otp3" placeholder="XXXX">
 </div>
+<div id="otpmsg" class="col-sm-2"></div>
 <div class="col-sm-1">
 <img src="http://icons.iconarchive.com/icons/paomedia/small-n-flat/24/sign-check-icon.png" id="otpCodeGreen" style="display:none;padding-top: 5px;">
 <img src="http://icons.iconarchive.com/icons/hopstarter/button/24/Button-Close-icon.png" id="otpCodeRed" style="display:none;padding-top: 5px;">
@@ -156,13 +166,6 @@
 </div>
  
 <div class="form-group">
-<label for="userName" class="col-sm-2 control-label">User Name:</label>
-<div class="col-sm-6">
-<input type="text" name="username" class="form-control" id="username" placeholder="User Name">
-</div>
-</div>
- 
-<div class="form-group">
 <label for="passwd" class="col-sm-2 control-label">Password:</label>
 <div class="col-sm-6">
 <input type="password" name="passwd" class="form-control" id="passwd" placeholder="Password">
@@ -172,14 +175,14 @@
 <div class="form-group">
 <label for="passwd" class="col-sm-2 control-label">Confirm Password:</label>
 <div class="col-sm-6">
-<input type="password" name="confrmpasswd" class="form-control" id="confrmpasswd" placeholder="Confirm Password">
+<input type="password" name="confrmpasswd" class="form-control" id="confrmpasswd" placeholder="Confirm Password" onblur="checkingConfirmPasswords(this)" >
 </div>
 </div>
  
 <div class="form-group">
 <div class="col-sm-offset-2 col-sm-10">
-<button type="submit" class="btn btn-primary" id="register">Register</button>
-<button type="submit" class="btn btn-danger" id="cancel_btn">Cancel</button>
+<button type="submit" class="btn btn-success" id="register">Register</button>
+<button type="button" class="btn btn-danger" id="register_cancel_btn">Cancel</button>
 </div>
 </div>
  
@@ -191,6 +194,7 @@
 </body>
 <script type="text/javascript">
 $(document).ready(function() {
+	var otp;
 	debugger;	
 	$("#submit_id").click(function() {
 	var name = $("#user").val();
@@ -221,59 +225,155 @@ $(document).ready(function() {
 		   $("#registration").hide();
 		  $("#FirstForm").show();
       })
+       
       
       
 });
 function ClickRegistration(id){	
 	$("#otp").hide();
-	$("#validId").click(function(){
+	$("#validId").click(function(){	
 	$("#validId").prop('disabled', true);
 	$("#gmail").prop('disabled', true);	
   	  $("#otp").show();
-    })
+		    
+	})
 	
 }
 function sendingOTP(id){
 	$("#otpCodeGreen","#otpCodeRed","#otpCodeBusy").hide();
-	debugger
-	var mail=$("#gmail").val();
-	
+	debugger;
+	var mail=$("#gmail").val();	
 	console.log(mail);
-	var data=mail;
+	var status=mail;
+	var resultCallback;
 	$.ajax({
 		   type : "POST",			
-			url : "${home}SendOtpToMail?mail="+data,			
-			data: JSON.stringify(data),
+			url : "${home}checkingExistingMail?mail="+status,			
+			contentType: "application/json; charset=utf-8",
+			data: status,			
+         cache: false,           
 			success : function(data) {
-				console.log("SUCCESS: "+data);
-				$("#msgID").html(data);					  
+				console.log("SUCCESS1 "+data);
+			if(data==="true"){
+				resultCallback=true;
+			checkingExistingEmail();
+			$("#validId").prop('disabled', false);
+			$("#gmail").prop('disabled', false);	
+		  	$("#otp").hide();
+		  	$("#register").prop('disabled', true);
+			
+			}
+			else{
+				resultCallback=false;
+				$("#validId").prop('disabled', true);
+				$("#gmail").prop('disabled', true);	
+			  	$("#otp").show();
+			  	$("#register").prop('disabled', false);
+				}
+			
 			},error:function(data) {
 				console.log("error "+data);
 			}
 	   });
+	if(!resultCallback && typeof(myVariable) != "undefined"){
+	$.ajax({
+		   type : "POST",			
+			url : "${home}SendOtpToMail?id="+status,			
+			contentType: "application/json; charset=utf-8",
+			data: status,			
+            cache: false,           
+			success : function(data) {
+			console.log("SUCCESS: "+data);
+		        otp=data;
+				 $("#msgID").html("Successfully sent OTP..!"); 					
+			},error:function(data) {
+				console.log("error "+data);
+			}
+	   });
+	}
 
+}
+
+function checkingExistingUser(id){
+	debugger;
+	var username=$("#username").val();
+	var status=username;
+	$.ajax({
+		   type : "POST",			
+			url : "${home}checkExistingUser?id="+username,			
+			contentType: "application/json; charset=utf-8",
+			data: status,			
+            cache: false,           
+			success : function(data) {
+				if(data=="true"){
+				ValidateEmail1();
+				$("#register").prop('disabled', true);
+				}
+				else{
+					$("#register").prop('disabled', false);		
+				}
+			},error:function(data) {
+				
+			}
+	   });
+
+}
+
+function checkingConfirmPasswords(){
+	var password=$("#passwd").val();
+	var confimpassword =$("confrmpasswd").val();
+	if(password === confimpassword)
+		alert("Confirm Password should be same as password");
+}
+
+function ValidateEmail(inputText)
+{
+var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+if(inputText.value.match(mailformat))
+{
+document.form1.text1.focus();
+return true;
+}
+else
+{
+alert("You have entered an invalid email address!");
+document.form1.text1.focus();
+return false;
+}
 }
 
 function checkingOTP(code){
 	debugger
 	$("#otpCodeGreen","#otpCodeRed","#otpCodeBusy").hide();
-	//$("#otpCodeGreen").show();
-	$("#otpCodeRed").show();	
-	
-	$.ajax({
-		   type : "POST",			
-			url : "${home}varifyOTP?code="+code,			
-			data: JSON.stringify(data),
-			success : function(data) {
-				$("#otpCodeBusy").hide();
-				console.log("SUCCESS: "+data);
-				$("#msgID").html(data);					  
-			},error:function(data) {
-				console.log("error "+data);
-			}
-	   });
-	//$("#msgID1").html("jjjj");	
+	if(otp === code){
+		$("#otpCodeGreen").show();
+		$("#otp").prop('disabled', true);
+		$("#register").prop('disabled', false);
+		$("#otpCodeRed").hide();
+		$("#otpmsg").html("");
+	}
+	else{
+		$("#otpCodeRed").show();
+		$("#otpmsg").html("Invalid OTP Please try again..!")
+		$("#validId").show();
+		$("#register").prop('disabled',true);
+	}
+		
 }
+
+function ValidateEmail1(){
+	debugger;
+	alert("User is already used.Please use another userid..!");
+	return false;
+}
+function checkingExistingEmail(){
+	debugger;
+	alert("Email is already used.Please use another gmail..!");
+	return false;
+}
+
+
+
 
      
 </script></html>
