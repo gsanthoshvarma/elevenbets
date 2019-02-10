@@ -43,23 +43,28 @@ String url=request.getServerName().trim();
 <input type="hidden" name="csrfPreventionToken" id="csrfPreventionToken" value="${csrfPreventionToken}" />
 <input type="hidden" name="initiating_url" id="initiating_url" value=""/>
 <c:set var="url" value='<%=url %>' />
-<div class="page-header gi-no-line header gi-m-n gi-p-b-none" style="background-color: chocolate;">
+<div class="page-header gi-no-line header gi-m-n gi-p-b-none" style="background-color: 1abc9c;margin:0px 0 20px; padding-bottom:0px;">
 	<div class="row gi-m-n header-bg">
-		<div class="col-xs-3 col-sm-3 col-md-3"><div id="magma-logo gi-m-l-sm"><img src="https://images.financialexpress.com/2017/12/noname-9.jpg" class="img-rounded" alt="Cinque Terre" width="220" height="121" /></div></div>
-		<div class="col-xs-6 col-sm-6 col-md-6  gi-text-center gi-p-t-xs">
-			<!-- <div class="body-head-title"> --><h1>Online Betting Game</h1><br />The best way to pay for a lovely moment is to enjoy it..!<!-- </div> -->
+		<div class="col-xs-2 col-sm-2 col-md-2"><div id="magma-logo gi-m-l-sm"><img src="resources/images/talent_logo.png" class="img-rounded" alt="Cinque Terre" width="238" height="121" /></div></div>
+		<div class="col-xs-2 col-sm-2 col-md-2"><div id="magma-logo gi-m-l-sm"><img src="resources/images/99_logo.png" class="img-rounded" alt="Cinque Terre" width="105" height="101" /></div></div>
+		
+		<div class="col-xs-4 col-sm-4 col-md-4  gi-text-center gi-p-t-xs">
+			<!-- <div class="body-head-title"> --><h1 style="font-family: sans-serif;color:#f6f2f3;font-weight: bolder;"><span style="color:#b22f27">T@Lent</span><span style="color:#fdbf48">99*</span> CrIckEt BetTin9</h1><br /><h5 style="font-family: sans-serif;color:#f6f2f3;font-weight: bolder;">The best way to bet for a lovely team to enjoy it</h5><!-- </div> -->
 
 		</div>
+		<div class="col-xs-1 col-sm-1 col-md-1"><div id="magma-logo gi-m-l-sm"><img src="resources/images/developer2.png" class="img-rounded" alt="Cinque Terre" width="105" height="101" /></div></div>
 		<div class="col-xs-2 col-sm-2 col-md-2 gi-text-right gi-p-t-xs">
-			Sandeep G(1101)<br />
-			Last Login : <br />
-				
+			UserName : ${userdetails.username}<br />
+			Last Login : 2019:02:09 14:00:12<br />
+			Change Password<br/>
+			<br>
+			<button type="button" class="btn btn-default" style="height: 27px;" disabled>Total Amount INR : 500.00 <i class="fa fa-rupee"></i></button>	
 			
 		</div>
 		
 		<div class="col-xs-1 col-sm-1 col-md-1 gi-p-t">
 			<div class="row">
-				<c:if test="${userProfile.activeDirectoryEnable=='false'}">
+				<%-- <c:if test="${userProfile.activeDirectoryEnable=='false'}">
 					<c:if test="${userProfile.ssoEnabled=='false'}">
 					<div class="col-xs-5 col-sm-5 col-md-5 gi-no-padder border-light">			
 						<div class="border-dark gi-padder">
@@ -67,18 +72,22 @@ String url=request.getServerName().trim();
 						</div>
 					</div>
 					</c:if> 
-				</c:if>
+				</c:if> --%>
+				
+      
 				<div class="col-xs-5 col-sm-5 col-md-5 gi-no-padder border-light">
-					<div class="border-dark gi-padder"><img src="https://comps.canstockphoto.com/logout-blue-round-button-drawings_csp51468137.jpg" alt="" title="Logout" onclick="doLogout();" class="img-rounded" alt="Cinque Terre" width="80" height="90" /></div>
+					<div class="border-dark gi-padder"><a href='<c:url value="/Logout/"/>' class="btn btn-danger" role="button"><span class="glyphicon glyphicon-log-out"></span>Log out</a>
+						
+					</div>
 				</div>
-			<div class="col-xs-4 col-sm-4 col-md-4 gi-no-padder border-light">
+			<!-- <div class="col-xs-4 col-sm-4 col-md-4 gi-no-padder border-light">
 					<div class="border-dark gi-padder"><img style="width: 17px; height: 22px; margin-top: -2px;" src="images/navigation.png" alt="" title="" onclick="navigateTo();"/></div>
 				</div>
-			</div>
+			</div> -->
 		</div>
 	</div>
 </div>
-<!-- Generic modal start -->
+<!-- <!-- Generic modal start -->
 <div class="modal fade generic-modal">
   <div class="modal-dialog" id="modalDialog">
     <div class="modal-content">
@@ -92,7 +101,7 @@ String url=request.getServerName().trim();
       </div>
     </div>
   </div>
-</div>
+</div> -->
 <!-- Generic modal end -->
 <!--
 <script type='text/javascript'> 
@@ -116,11 +125,11 @@ $(document).on("contextmenu",function(e){
 -->
 
 <!-- Button trigger modal -->
-<div type="button" id="mymodal" data-toggle="modal" data-target="#myModal">
-</div>
+<!-- <div type="button" id="mymodal" data-toggle="modal" data-target="#myModal">
+</div> -->
 
 <!-- Modal --> 
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"  >
+<!-- <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"  >
   <div class="modal-dialog" role="document">
     <div class="modal-content" >
    <div class="modal-header">
@@ -196,14 +205,14 @@ $(document).on("contextmenu",function(e){
       </div>
     </div>
   </div>
-</div> 
+</div>  -->
 
 
 
 <script type="text/javascript">		
 	$(document).ready(function(){
 		
-		var popUpLoad=false;
+		<%-- var popUpLoad=false;
 		popUpLoad = <%=session.getAttribute("showPopupMessage") %>
 		    if(popUpLoad){
 			jQuery('#mymodal').trigger('click');
@@ -223,17 +232,15 @@ $(document).on("contextmenu",function(e){
 	});
 	window.closeModal = function() {
 		$('.generic-modal').modal('hide');
-	};
-	function doLogout() {
-		
-		localStorage.removeItem("pos-uid");
-		
+	}; --%>
+	function doLogout() {	
+		//localStorage.removeItem("pos-uid");		
 		document.forms[0].method = "POST";
-		document.forms[0].formAction.value = "Logout";
-		document.forms[0].action = "loginController.do";
+		document.forms[0].formAction= "Logout";
+		document.forms[0].action = "UserController.do";
 		document.forms[0].submit();
 	}
-	function showPopWin(URL,headingText,winWidth, winHeight){
+	<%-- function showPopWin(URL,headingText,winWidth, winHeight){
 		document.getElementById("modalTitle").innerHTML=headingText;
 		if(URL.indexOf(".do")!=-1){
 			$("#genericPopupFrame").show();
@@ -275,13 +282,13 @@ $(document).on("contextmenu",function(e){
 						+ ". Please contact your Sales helpdesk team if you don't belong to "
 						+ stateName);
 			return;
-		}
+		} --%>
 </script>
 
 
 <script type="text/javascript">
 // JS global varaible to store count of reports requested
-var reportsRequestCountJS=0;
+/* var reportsRequestCountJS=0;
 
 function generate(type,txt) {
   	var n = noty({
@@ -337,7 +344,7 @@ function notificationCall()
 			}
 		});
 		}
-}
+} */
 
 </script>
 

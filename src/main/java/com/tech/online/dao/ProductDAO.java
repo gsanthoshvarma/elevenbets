@@ -3,6 +3,8 @@ package com.tech.online.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 import com.tech.online.model.Product;
 
 public class ProductDAO {

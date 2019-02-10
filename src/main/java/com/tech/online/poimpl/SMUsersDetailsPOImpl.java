@@ -1,6 +1,9 @@
 package com.tech.online.poimpl;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Id;
 import javax.persistence.Column;
@@ -9,11 +12,9 @@ import javax.persistence.Column;
 @Table(name="sm_users_details")
 public class SMUsersDetailsPOImpl {
 	
-	public SMUsersDetailsPOImpl() {
-		super();
-	}
-	
 	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO,generator="sequenceGene")
+	@SequenceGenerator(name="sequenceGene",sequenceName="sm_users_details_seq_id")
 	private long Id;
 	
 	@Column(name="user_id")
@@ -104,6 +105,9 @@ public class SMUsersDetailsPOImpl {
 		this.mobile = mobile;
 	}
 	
+	public SMUsersDetailsPOImpl() {
+		super();
+	}
 	
 
 }

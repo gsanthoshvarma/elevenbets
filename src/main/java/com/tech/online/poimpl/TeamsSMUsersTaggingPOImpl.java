@@ -15,9 +15,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name="tb_mst_smusers_tagging")
 public class TeamsSMUsersTaggingPOImpl {
-	public TeamsSMUsersTaggingPOImpl() {
-		super();
-	}
+	
 	@Id
     @SequenceGenerator(name="seq",sequenceName="tb_mst_smusers_tagging_seq_id")        
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq") 
@@ -26,12 +24,22 @@ public class TeamsSMUsersTaggingPOImpl {
     @Column(name="team_id")
 	private String teamId;    
     
-    
     @Column(name="is_active")
 	private int isActive;
     
-    @Column(name="username")
+    @Column(name="user_id")
     private String username;
+    
+    @Column(name="match_no")
+    private int matchNo;
+
+	public int getMatchNo() {
+		return matchNo;
+	}
+
+	public void setMatchNo(int matchNo) {
+		this.matchNo = matchNo;
+	}
 
 	public String getUsername() {
 		return username;
@@ -64,6 +72,9 @@ public class TeamsSMUsersTaggingPOImpl {
 
 	public void setIsActive(int isActive) {
 		this.isActive = isActive;
+	}
+	public TeamsSMUsersTaggingPOImpl() {
+		super();
 	}
     
 	
