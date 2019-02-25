@@ -8,7 +8,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
 /**
- * This Class is used to send an emails.
+ * This Class is used to send an emails by using Gmail SMTP Server
  * @author intel
  *
  */
@@ -16,17 +16,16 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 public class GmailUtil implements Email {
 	
 	private ApplicationContext applicationContext;
-	private String toEmailId;
 	
     @Override
-	public void sendAnEmail(String subject,String msg){
+	public void sendAnEmail(String toMailId, String subject,String msg){
 		JavaMailSenderImpl mailSender;
 		try{
 			mailSender = applicationContext.getBean("mailSender",JavaMailSenderImpl.class);
 	        MimeMessage message = mailSender.createMimeMessage();
 	        MimeMessageHelper helper = new MimeMessageHelper(message);
 	        helper.setFrom(FROM_EMAIL_ID);
-	        helper.setTo(toEmailId);
+	        helper.setTo(toMailId);
 	        helper.setSubject(subject);       
 	        helper.setText(msg, true);
 	        mailSender.send(message);
@@ -38,9 +37,8 @@ public class GmailUtil implements Email {
 		}
 	}
 	
-	public GmailUtil(ApplicationContext applicationContext,String toEmailId) {
+	public GmailUtil(ApplicationContext applicationContext) {
 		this.applicationContext = applicationContext;
-		this.toEmailId = toEmailId;
 	}
 
 }
