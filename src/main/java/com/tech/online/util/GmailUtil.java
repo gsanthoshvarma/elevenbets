@@ -13,14 +13,13 @@ import org.springframework.mail.javamail.MimeMessageHelper;
  *
  */
 
-public class EmailUtil {
+public class GmailUtil implements Email {
 	
 	private ApplicationContext applicationContext;
-	private static final String FROM_EMAIL_ID="";
 	private String toEmailId;
 	
-
-	public void sendMail(String subject,String msg){
+    @Override
+	public void sendAnEmail(String subject,String msg){
 		JavaMailSenderImpl mailSender;
 		try{
 			mailSender = applicationContext.getBean("mailSender",JavaMailSenderImpl.class);
@@ -39,8 +38,9 @@ public class EmailUtil {
 		}
 	}
 	
-	public EmailUtil(ApplicationContext applicationContext,String toEmailId) {
+	public GmailUtil(ApplicationContext applicationContext,String toEmailId) {
 		this.applicationContext = applicationContext;
 		this.toEmailId = toEmailId;
 	}
+
 }
