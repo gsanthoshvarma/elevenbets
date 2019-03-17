@@ -373,6 +373,25 @@
 	   });
 	   
    } 
+    
+    /* Live score */
+    
+    fetch('https://cricapi.com/api/cricketScore?apikey=GWZsmggYYWh5P785uybKfTKIrDs1&unique_id=1168120')
+        .then(result => {
+            //console.log(result);
+            return result.json();
+        }).then(jsonData => {
+            console.log(jsonData);
+            var resultScore = jsonData.score; 
+            string:val = resultScore.split(" * v");
+            document.querySelector("#teamA").innerHTML = val[0];
+            document.querySelector("#teamB").innerHTML = val[1];
+            console.log(jsonData.score);
+        })
+        .catch(error =>{
+            console.log(error);
+        })
+    
   </script>
 </head>
 </head>
@@ -414,10 +433,16 @@
       <h3>SM Users Betting History</h3>
       <p>Betting History for all who registered and match betted</p>     
       <table class="table table-bordered table-striped table-sm" role="grid" style="margin-left: 0px; width: 935.333px;" id="mastersTable" >
-     
       </table>
-     
     </div>
+    <div class="tab-content">
+    <div id="home" class="tab-pane fade in active">
+      <h3>Live Score</h3>
+      <p id="teamA"></p>
+      <p id="teamB"></p>     
+    </div>
+    </div>
+   
     <div id="menu1" class="tab-pane fade">
       <div class="container">
 	<div class="row">
